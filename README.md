@@ -1,16 +1,76 @@
-# React + Vite
+# User Management Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive React application for user management with authentication, user profiles, and administrative features.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Authentication
+- User registration and login
+- JWT token management
+- Protected routes
+- Session persistence
+- Password reset functionality
 
-## React Compiler
+### User Management
+- User profile management
+- Avatar upload
+- Password change
+- Account settings
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Admin Features
+- User list management
+- User search and filtering
+- Bulk operations
+- Export functionality
 
-## Expanding the ESLint configuration
+### UI/UX
+- Responsive design
+- Dark/Light mode
+- Loading states
+- Toast notifications
+- Form validation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- **React 18** with Hooks
+- **TypeScript** for type safety
+- **Vite** as build tool
+- **Tailwind CSS** for styling
+- **React Router** for navigation
+- **React Query** for data fetching
+- **React Hook Form** for forms
+- **Axios** for HTTP requests
+
+## Prerequisites
+
+- Node.js 18 or higher
+- npm, yarn, or pnpm
+- Backend API running (see backend setup)
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/user-management-frontend.git
+cd user-management-frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+
+3. Configure environment variables:
+```bash
+cp .env.example .env
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+5. Note :
+```bash
+npm run dev
+```
