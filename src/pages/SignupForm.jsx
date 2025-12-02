@@ -4,6 +4,7 @@ import { AuthContext } from '../context/authContext';
 import { useNavigate } from 'react-router-dom'; 
 
 
+
 const Signup = () => {
   const navigate = useNavigate();
   const { register } = useContext(AuthContext);
@@ -51,7 +52,7 @@ const Signup = () => {
     confirmPassword,
   });
 
-  const res = await register(username, email, password, confirmPassword);
+  const res = await register(username, email, password, confirmPassword,navigate);
 
   setLoading(false);
 
