@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (username, email, password, confirmPassword) => {
+  const register = async (username, email, password, confirmPassword,navigate) => {
     try {
       const res = await axios.post(
         'http://localhost:8000/api/auth/register',
@@ -65,24 +65,19 @@ export const AuthProvider = ({ children }) => {
 
       setUser(res.data.data.user);
 
-    //   Swal.fire({
-    //     icon: 'success',
-    //     title: 'Registration Successful',
-    //     text: `Welcome, ${res.data.data.user.username}!`,
-    //     confirmButtonText: 'OK',
-    //   }).then(() => {
-    //     if (navigate) navigate('/');
-    //   });
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful',
+        text: `Welcome, ${res.data.data.user.username}!`,
+        confirmButtonText: 'OK',
+      }).then(() => {
+        if (navigate) navigate('/');
+      });
 
-    Swal.fire({
-  icon: 'success',
-  title: 'Registration Successful',
-  text: `Welcome, ${res.data.data.user.username}!`,
-  timer: 2000,
-  showConfirmButton: false,
-});
-
+   
       return { success: true };
+
+     
     
     } catch (error) {
   console.log("ERROR MESSAGE:", error.message);
