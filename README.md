@@ -51,7 +51,7 @@ A modern, responsive React application for user management with authentication, 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/user-management-frontend.git
+git clone https://github.com/oys2021/user-management-frontend.git
 cd user-management-frontend
 ```
 

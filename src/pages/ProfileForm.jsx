@@ -39,7 +39,7 @@ const ProfileForm = () => {
         text: `Welcome back, ${res.data.data.user.username}!`,
         confirmButtonText: 'OK',
       }).then(() => {
-        navigate('/'); // navigate home on OK
+        navigate('/'); 
       });
 
     } catch (err) {
