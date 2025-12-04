@@ -1,7 +1,6 @@
-// src/pages/Login.jsx
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/authContext';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,10 +29,10 @@ const Login = () => {
     }
     setErrors({});
     setLoading(true);
-    const res = await login(email, password,navigate);
+    const res = await login(email, password, navigate);
     setLoading(false);
     if (!res.success) {
-      setServerError(res.message);
+      setServerError(res.message || 'Login failed');
     }
   };
 
@@ -87,9 +86,6 @@ const Login = () => {
               />
               <span className="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
-            {/* <a href="#" className="text-sm text-indigo-600 hover:text-indigo-500">
-              Forgot password?
-            </a> */}
           </div>
 
           <button

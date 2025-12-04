@@ -1,4 +1,3 @@
-// AuthContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -9,19 +8,38 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const res = await axios.get('http://localhost:8000/api/auth/me', { withCredentials: true });
-        setUser(res.data.data.user);
-      } catch {
+  const fetchCurrentUser = async () => {
+    try {
+      const res = await axios.get('http://localhost:8000/api/auth/me', { withCredentials: true });
+      setUser(res.data.data.user);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        const refreshed = await refreshToken();
+        if (refreshed) {
+          await fetchCurrentUser();
+        } else {
+          setUser(null);
+        }
+      } else {
         setUser(null);
-      } finally {
-        setLoading(false);
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchCurrentUser();
   }, []);
+
+  const refreshToken = async () => {
+    try {
+      await axios.post('http://localhost:8000/api/auth/refresh-token', {}, { withCredentials: true });
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   const login = async (email, password, navigate) => {
     try {
@@ -39,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         text: `Welcome back, ${res.data.data.user.username}!`,
         confirmButtonText: 'OK',
       }).then(() => {
-        if (navigate) navigate('/'); 
+        if (navigate) navigate('/');
       });
 
       return { success: true };
@@ -55,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (username, email, password, confirmPassword,navigate) => {
+  const register = async (username, email, password, confirmPassword, navigate) => {
     try {
       const res = await axios.post(
         'http://localhost:8000/api/auth/register',
@@ -74,54 +92,21 @@ export const AuthProvider = ({ children }) => {
         if (navigate) navigate('/');
       });
 
-   
       return { success: true };
-
-     
-    
     } catch (error) {
-  console.log("ERROR MESSAGE:", error.message);
-  console.error("BACKEND ERROR RAW:", error.response?.data);
+      const backend = error.response?.data;
 
-  const backend = error.response?.data;
+      if (backend?.errors?.length > 0) {
+        const formattedErrors = backend.errors.map(err => `• ${err.msg}`).join('<br>');
+        Swal.fire({ icon: 'error', title: 'Validation Error', html: formattedErrors, confirmButtonText: 'OK' });
+        return { success: false, errors: backend.errors };
+      }
 
-
-  if (backend?.errors?.length > 0) {
-    const formattedErrors = backend.errors.map(err => `• ${err.msg}`).join("<br>");
-
-    Swal.fire({
-      icon: "error",
-      title: "Validation Error",
-      html: formattedErrors,      
-      confirmButtonText: "OK",
-    });
-
-    setServerError(backend.errors.map(err => err.msg).join("\n"));
-
-    return {
-      success: false,
-      errors: backend.errors,
-    };
-  }
-
-
-  Swal.fire({
-    icon: "error",
-    title: "Registration Failed",
-    text: backend?.message || "Something went wrong!",
-    confirmButtonText: "OK",
-  });
-
-  setServerError(backend?.message || "Registration failed");
-
-  return {
-    success: false,
-    message: backend?.message || "Registration failed",
-  };
-}
+      Swal.fire({ icon: 'error', title: 'Registration Failed', text: backend?.message || 'Something went wrong!', confirmButtonText: 'OK' });
+      return { success: false, message: backend?.message || 'Registration failed' };
+    }
   };
 
-  
   const logout = async () => {
     try {
       await axios.post('http://localhost:8000/api/auth/logout', {}, { withCredentials: true });
@@ -132,7 +117,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, fetchCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,3 @@
-// src/components/ProfileForm.jsx
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/authContext';
 import axios from 'axios';
@@ -8,10 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const ProfileForm = () => {
   const navigate = useNavigate();
   const { user, loading, logout } = useContext(AuthContext);
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-  });
+  const [formData, setFormData] = useState({ username: '', email: '' });
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
@@ -31,15 +27,19 @@ const ProfileForm = () => {
     e.preventDefault();
     setUpdating(true);
     try {
-      const res = await axios.put('http://localhost:8000/api/auth/profile', formData, { withCredentials: true });
-      
+      const res = await axios.put(
+        'http://localhost:8000/api/auth/profile',
+        formData,
+        { withCredentials: true }
+      );
+
       Swal.fire({
         icon: 'success',
         title: 'Profile updated successfully!',
         text: `Welcome back, ${res.data.data.user.username}!`,
         confirmButtonText: 'OK',
       }).then(() => {
-        navigate('/'); 
+        navigate('/');
       });
 
     } catch (err) {
@@ -53,29 +53,26 @@ const ProfileForm = () => {
     }
   };
 
-if (loading) return <p className="text-center mt-10">Loading...</p>;
-if (!user) {
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md text-center">
-        <h2 className="text-2xl font-bold mb-4 text-red-600">You are not logged in</h2>
-        <p className="mb-6 text-gray-700">
-          Please log in to access your profile.
-        </p>
-        <Link
-          to="/login"
-          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-        >
-          Go to Login
-        </Link>
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
+        <div className="bg-white shadow-lg rounded-lg p-8 max-w-md text-center">
+          <h2 className="text-2xl font-bold mb-4 text-red-600">You are not logged in</h2>
+          <p className="mb-6 text-gray-700">Please log in to access your profile.</p>
+          <Link
+            to="/login"
+            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+          >
+            Go to Login
+          </Link>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar */}
       <nav className="bg-indigo-600 text-white p-4 flex justify-between items-center">
         <h1 className="font-bold text-xl">Profile Page</h1>
         <div className="space-x-4">
@@ -88,7 +85,6 @@ if (!user) {
         </div>
       </nav>
 
-      {/* Profile Form */}
       <div className="flex items-center justify-center p-4 mt-10">
         <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-6 relative">
           <div className="flex justify-center">

@@ -1,9 +1,6 @@
-// src/pages/Signup.jsx
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/authContext';
-import { useNavigate } from 'react-router-dom'; 
-
-
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,7 +10,6 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
-
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,37 +28,21 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setServerError('');
-
-  const validationErrors = validate();
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  setErrors({});
-  setLoading(true);
-
-  // 🔥 DEBUG: See exactly what is sent
-  console.log("SUBMITTED PAYLOAD:", {
-    username,
-    email,
-    password,
-    confirmPassword,
-  });
-
-  const res = await register(username, email, password, confirmPassword,navigate);
-
-  setLoading(false);
-
-  if (!res.success) {
-    setServerError(res.message);
-  }
-
-  
-};
-
+    e.preventDefault();
+    setServerError('');
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+    setLoading(true);
+    const res = await register(username, email, password, confirmPassword, navigate);
+    setLoading(false);
+    if (!res.success) {
+      setServerError(res.message || 'Registration failed');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -75,9 +55,7 @@ const Signup = () => {
 
         <form className="space-y-4" onSubmit={handleSubmit} noValidate>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Username
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
             <input
               type="text"
               value={username}
@@ -91,9 +69,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               type="email"
               value={email}
@@ -107,9 +83,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               type="password"
               value={password}
@@ -123,9 +97,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}
@@ -153,10 +125,10 @@ const Signup = () => {
 
           <button
             type="submit"
-            // disabled={loading}
+            disabled={loading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors disabled:opacity-50"
           >
-            Sign Up
+            {loading ? 'Signing up...' : 'Sign Up'}
           </button>
         </form>
 
