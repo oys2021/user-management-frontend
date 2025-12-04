@@ -1,8 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/authContext';
-import { useNavigate } from 'react-router-dom'; 
-
-
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -30,37 +28,21 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setServerError('');
-
-  const validationErrors = validate();
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  setErrors({});
-  setLoading(true);
-
-  // 🔥 DEBUG: See exactly what is sent
-  console.log("SUBMITTED PAYLOAD:", {
-    username,
-    email,
-    password,
-    confirmPassword,
-  });
-
-  const res = await register(username, email, password, confirmPassword,navigate);
-
-  setLoading(false);
-
-  if (!res.success) {
-    setServerError(res.message);
-  }
-
-  
-};
-
+    e.preventDefault();
+    setServerError('');
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+    setLoading(true);
+    const res = await register(username, email, password, confirmPassword, navigate);
+    setLoading(false);
+    if (!res.success) {
+      setServerError(res.message || 'Registration failed');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
