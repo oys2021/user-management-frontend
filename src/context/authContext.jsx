@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (username, email, password, confirmPassword, navigate) => {
+  const register = async (username, email, password, confirmPassword,navigate) => {
     try {
       const res = await axios.post(
         'http://localhost:8000/api/auth/register',
@@ -92,7 +92,11 @@ export const AuthProvider = ({ children }) => {
         if (navigate) navigate('/');
       });
 
+   
       return { success: true };
+
+     
+    
     } catch (error) {
       const backend = error.response?.data;
 
